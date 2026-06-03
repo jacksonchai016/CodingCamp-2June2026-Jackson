@@ -1,0 +1,434 @@
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Root variables (Light mode — default) ──────────────────── */
+:root {
+  --bg-gradient-start: #6b6bdb;
+  --bg-gradient-end:   #9b59b6;
+  --card-bg:           #ffffff;
+  --card-radius:       14px;
+  --card-shadow:       0 2px 12px rgba(0,0,0,0.12);
+
+  --color-clock:       #5b5bd6;
+  --color-date:        #555;
+  --color-greeting:    #111;
+
+  --color-timer-num:   #5b5bd6;
+  --color-section-title: #111;
+
+  --btn-primary-bg:    #5b5bd6;
+  --btn-primary-text:  #fff;
+  --btn-delete-bg:     #e74c3c;
+  --btn-delete-text:   #fff;
+
+  --input-border:      #5b5bd6;
+  --input-bg:          #fff;
+  --input-text:        #333;
+
+  --color-error:       #e74c3c;
+  --color-text-muted:  #999;
+
+  --todo-border:       #f0f0f0;
+  --body-color:        #111;
+
+  --gap: 16px;
+}
+
+/* ── Dark mode variables ────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg-gradient-start: #1a1a2e;
+  --bg-gradient-end:   #16213e;
+  --card-bg:           #1e1e2e;
+  --card-shadow:       0 2px 12px rgba(0,0,0,0.4);
+
+  --color-clock:       #818cf8;
+  --color-date:        #a0aec0;
+  --color-greeting:    #e2e8f0;
+
+  --color-timer-num:   #818cf8;
+  --color-section-title: #e2e8f0;
+
+  --btn-primary-bg:    #4f46e5;
+  --btn-primary-text:  #fff;
+  --btn-delete-bg:     #c0392b;
+  --btn-delete-text:   #fff;
+
+  --input-border:      #4f46e5;
+  --input-bg:          #2d2d42;
+  --input-text:        #e2e8f0;
+
+  --color-error:       #fc8181;
+  --color-text-muted:  #718096;
+
+  --todo-border:       #2d2d42;
+  --body-color:        #e2e8f0;
+}
+
+/* ── Body / Background ──────────────────────────────────────── */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  min-height: 100vh;
+  padding: 24px;
+  color: var(--body-color);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ── Dashboard grid ─────────────────────────────────────────── */
+/*
+  Layout (matches screenshot):
+  - Row 1 : greeting spans full width  (columns 1-2)
+  - Row 2 : timer (col 1) | tasks (col 2)
+  - Row 3 : quick-links (col 1) | tasks continues (col 2) via row-span
+*/
+#dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: var(--gap);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Row 1 – greeting: full width */
+#widget-greeting {
+  grid-column: 1 / 3;
+  grid-row: 1;
+}
+
+/* Row 2 col 1 – timer */
+#widget-timer {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Row 2-3 col 2 – tasks spans two rows to match timer + quick-links height */
+#widget-todo {
+  grid-column: 2;
+  grid-row: 2 / 4;
+}
+
+/* Row 3 col 1 – quick links */
+#widget-links {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+/* ── Card base ──────────────────────────────────────────────── */
+section {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 24px 28px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ── Section headings ───────────────────────────────────────── */
+h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-section-title);
+  margin-bottom: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ── Greeting widget ────────────────────────────────────────── */
+#widget-greeting {
+  text-align: center;
+  padding: 28px 24px;
+}
+
+#greeting-time {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-clock);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+#greeting-date {
+  font-size: 0.9rem;
+  color: var(--color-date);
+  margin: 4px 0 8px;
+}
+
+#greeting-text {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-greeting);
+}
+
+/* ── Focus Timer widget ─────────────────────────────────────── */
+#widget-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#timer-display {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--color-timer-num);
+  font-family: ui-monospace, 'Courier New', monospace;
+  letter-spacing: 0.04em;
+  margin: 8px 0 18px;
+  text-align: center;
+}
+
+#timer-display.timer-done {
+  color: #e74c3c;
+}
+
+#timer-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ── Shared button styles ───────────────────────────────────── */
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity 0.15s;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
+button:hover:not(:disabled) { opacity: 0.85; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Add button variant (blue) */
+.btn-add {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  white-space: nowrap;
+  padding: 8px 20px;
+}
+
+/* Delete button variant (red) */
+.btn-delete {
+  background: var(--btn-delete-bg);
+  color: var(--btn-delete-text);
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* ── To-Do / Tasks widget ───────────────────────────────────── */
+#widget-todo {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#todo-input {
+  flex: 1;
+}
+
+#todo-list {
+  list-style: none;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#todo-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 2px;
+  border-bottom: 1px solid var(--todo-border);
+}
+
+#todo-list li:last-child {
+  border-bottom: none;
+}
+
+.todo-task-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--input-text);
+}
+
+.todo-completed .todo-task-text {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* ── Quick Links widget ─────────────────────────────────────── */
+.links-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#link-label-input {
+  flex: 1;
+  min-width: 0;
+}
+
+#link-url-input {
+  flex: 1.4;
+  min-width: 0;
+}
+
+#links-list {
+  list-style: none;
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#links-list li {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* Link open button (pill style matching screenshot) */
+.btn-link-open {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-radius: 20px 0 0 20px;
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s;
+}
+
+.btn-link-open:hover { opacity: 0.85; }
+
+/* Link delete (×) button */
+.btn-link-delete {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-radius: 0 20px 20px 0;
+  padding: 7px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  transition: opacity 0.15s;
+}
+
+.btn-link-delete:hover { opacity: 0.85; }
+
+/* ── Shared input styles ────────────────────────────────────── */
+input[type="text"],
+input[type="url"] {
+  background: var(--input-bg);
+  color: var(--input-text);
+  border: 1.5px solid var(--input-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  width: 100%;
+  outline: none;
+  transition: box-shadow 0.15s;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus {
+  box-shadow: 0 0 0 3px rgba(91,91,214,0.2);
+}
+
+/* ── Validation message ─────────────────────────────────────── */
+.validation-msg {
+  font-size: 0.75rem;
+  color: var(--color-error);
+  min-height: 1rem;
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── Toast notification ─────────────────────────────────────── */
+#toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast {
+  background: var(--card-bg);
+  color: var(--body-color);
+  border-left: 4px solid var(--btn-primary-bg);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  max-width: 320px;
+  font-size: 0.875rem;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  box-shadow: var(--card-shadow);
+}
+
+.toast.fade-out { opacity: 0; }
+
+/* ── Responsive: single column on small screens ─────────────── */
+@media (max-width: 640px) {
+  #dashboard {
+    grid-template-columns: 1fr;
+  }
+  #widget-greeting { grid-column: 1; }
+  #widget-timer    { grid-column: 1; grid-row: auto; }
+  #widget-todo     { grid-column: 1; grid-row: auto; }
+  #widget-links    { grid-column: 1; grid-row: auto; }
+
+  .links-input-row { flex-direction: column; }
+}
+
+/* ── Theme toggle button ────────────────────────────────────── */
+#theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+[data-theme="dark"] #theme-toggle {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] #theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.5);
+}

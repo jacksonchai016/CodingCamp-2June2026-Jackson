@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productivity Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Dark/Light mode toggle -->
+  <button id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <span id="theme-icon">🌙</span>
+  </button>
+
+  <div id="dashboard">
+
+    <!-- Row 1: Greeting (full width) -->
+    <section id="widget-greeting">
+      <div id="greeting-time"></div>
+      <div id="greeting-date"></div>
+      <div id="greeting-text"></div>
+    </section>
+
+    <!-- Row 2 left: Focus Timer -->
+    <section id="widget-timer">
+      <h2>Focus Timer</h2>
+      <div id="timer-display" aria-label="Focus timer display">25:00</div>
+      <div id="timer-controls">
+        <button id="timer-start">Start</button>
+        <button id="timer-stop">Stop</button>
+        <button id="timer-reset">Reset</button>
+      </div>
+    </section>
+
+    <!-- Row 2 right: Tasks -->
+    <section id="widget-todo">
+      <h2>Tasks</h2>
+      <form id="todo-form">
+        <div class="todo-input-row">
+          <input type="text" id="todo-input" placeholder="Add a new task..." aria-label="New task text" />
+          <button type="submit" class="btn-add">Add</button>
+        </div>
+        <span id="todo-validation" class="validation-msg" role="alert" aria-live="polite"></span>
+      </form>
+      <ul id="todo-list"></ul>
+    </section>
+
+    <!-- Row 3 left: Quick Links -->
+    <section id="widget-links">
+      <h2>Quick Links</h2>
+      <form id="links-form">
+        <div class="links-input-row">
+          <input type="text" id="link-label-input" placeholder="Link name" aria-label="Link label" />
+          <input type="url"  id="link-url-input"   placeholder="URL" aria-label="Link URL" />
+          <button type="submit" class="btn-add">Add Link</button>
+        </div>
+        <span id="links-validation" class="validation-msg" role="alert" aria-live="polite"></span>
+      </form>
+      <ul id="links-list"></ul>
+    </section>
+
+  </div>
+
+  <div id="toast-container" aria-live="polite"></div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
